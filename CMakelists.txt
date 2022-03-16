@@ -14,6 +14,8 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE) # config for dynamic libraries
 link_directories(libs/SFML/lib) # specify lib path to look for SFML - contains all dynamic library files (.dll, dylib, .so) - required by linker
 # Standard path
 
+add_subdirectory("libs/pugixml")
+
 add_executable(xvgdl ${SRC_FILES})
 target_include_directories(xvgdl PUBLIC include ${SFML_INCLUDE_DIR}) # 'include' -> folder in project root
-target_link_libraries(xvgdl PUBLIC sfml-graphics sfml-window sfml-system sfml-audio sfml-network) # link sfml-graphics dynamic link library file (libsfml-sfml-graphics.dylib in MacOS), and others to sfml-app executable
+target_link_libraries(xvgdl PUBLIC sfml-graphics sfml-window sfml-system sfml-audio sfml-network pugixml) # link sfml-graphics dynamic link library file (libsfml-sfml-graphics.dylib in MacOS), and others to sfml-app executable
