@@ -9,7 +9,6 @@
             <xs:enumeration value="LEFT"/>
             <xs:enumeration value="RIGHT"/>
         </xs:restriction>
-        <randomtag></randomtag>
     </xs:simpleType>
 
     <xs:simpleType name="ruleType">
