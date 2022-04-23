@@ -1,5 +1,7 @@
 # CMake standard commands
 cmake_minimum_required(VERSION 3.10)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON) # enforces C++ version match
 
 set(PROJECT_NAME
     pugixml
