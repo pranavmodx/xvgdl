@@ -1,6 +1,6 @@
 #pragma once
 
-class GameMapDefinition {
+class Map {
 	int height;
 	int width;
 
