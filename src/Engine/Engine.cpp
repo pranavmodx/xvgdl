@@ -49,7 +49,7 @@ void Engine::pollEvents()
 
         case sf::Event::KeyPressed:
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            {
+            {      
             }
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             {
@@ -75,6 +75,9 @@ void Engine::update()
 void Engine::render()
 {
     window->clear(sf::Color(35, 35, 35));
+
+    for (auto object : gameContext->getObjects())
+        object->draw(window);
 
     window->display();
 }

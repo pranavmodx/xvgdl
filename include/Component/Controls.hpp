@@ -1,10 +1,11 @@
 #pragma once
 
 #include <unordered_map>
+#include <string>
 
 class Controls {
 	std::unordered_map<std::string, std::string> umap;
 public:
-	int getControls(std::string);
-	void setControls(const std::string& key, const std::string& value);
+	std::string getControls(std::string);
+	void setControls(std::string key, std::string value);
 };

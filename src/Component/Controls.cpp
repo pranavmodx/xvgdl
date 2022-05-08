@@ -1,6 +1,6 @@
 #include "Component/Controls.hpp"
 
-int Controls::getControls(std::string key) {
+std::string Controls::getControls(std::string key) {
 	return umap[key];
 }
 

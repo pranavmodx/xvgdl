@@ -6,7 +6,7 @@ int main(int argc, const char *argv[])
 
     Engine engine;
     if (engine.loadGameContext(filePath)) {
-        // engine.launchGame();
+        engine.launchGame();
     }
 
     return 0;

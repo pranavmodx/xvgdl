@@ -1,0 +1,8 @@
+<gameDefinition>
+	<controls>
+		<control />
+	</controls>
+	<objects>
+		<object name="block" type="block" />
+	</objects>
+</gameDefinition>

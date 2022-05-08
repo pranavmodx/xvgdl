@@ -38,7 +38,7 @@ int GameContext::parseGameDefinition(std::string filePath) {
 			map = std::make_unique<Map>();
 			parseMap(tag);
 		} else if (tagName == OBJECTS) {
-			objects.push_back(parseObject(tag));
+			parseObjects(tag);
 		}
 	}
 
@@ -67,4 +67,19 @@ void GameContext::parseMap(const pugi::xml_node &map) {
             std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
 			// controls.setControl(attr.value());
         }
+}
+
+void GameContext::parseObjects(const pugi::xml_node &object) {
+	for (pugi::xml_attribute attr = object.first_child().first_attribute(); attr; attr = attr.next_attribute())
+        {
+            std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
+			// controls.setControl(attr.value());
+			std::shared_ptr<Block> obj = std::make_shared<Block>();
+			ObjectPtr object = std::dynamic_pointer_cast<Object>(obj);
+			objects.push_back(object);
+        }
+}
+
+std::vector<ObjectPtr> GameContext::getObjects() {
+	return objects;
 }
