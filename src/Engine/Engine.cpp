@@ -2,21 +2,24 @@
 
 #include "Engine/Engine.hpp"
 
-int Engine::loadGameContext(std::string filePath) {
-	gameContext = std::make_unique<GameContext>();
-	if (gameContext->parseGameDefinition(filePath))
-		return 1;
-	return 0;
+int Engine::loadGameContext(std::string filePath)
+{
+    gameContext = std::make_unique<GameContext>();
+    if (gameContext->parseGameDefinition(filePath))
+        return 1;
+    return 0;
 }
 
-void Engine::launchGame() {
-	initVariables();
+void Engine::launchGame()
+{
+    initVariables();
     initWindow();
 
-	while (isRunning()) {
-		update();
+    while (isRunning())
+    {
+        update();
         render();
-	}
+    }
 }
 
 void Engine::initVariables()
@@ -30,6 +33,7 @@ void Engine::initVariables()
 void Engine::initWindow()
 {
     window = std::make_unique<sf::RenderWindow>(videoMode, "XVGDL");
+    window->setFramerateLimit(60);
 }
 
 bool Engine::isRunning()
@@ -47,37 +51,37 @@ void Engine::pollEvents()
             window->close();
             break;
 
-        case sf::Event::KeyPressed:
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            {      
-            }
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            {
-            }
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) or sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-            {
-            }
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-            {
-            }
-
         default:
             break;
         }
     }
+
+    auto players = gameContext->getPlayers();
+    auto p1 = std::static_pointer_cast<Block>(players[0]);
+    auto p2 = std::static_pointer_cast<Block>(players[1]);
+
+    p1->moveController();
+    p2->moveController(true);
+
+    gameContext->processRules();
 }
 
 void Engine::update()
 {
     this->pollEvents();
+
 }
 
 void Engine::render()
 {
     window->clear(sf::Color(35, 35, 35));
 
-    for (auto object : gameContext->getObjects())
-        object->draw(window);
+    auto players = gameContext->getPlayers();
+    auto p1 = std::static_pointer_cast<Block>(players[0]);
+    auto p2 = std::static_pointer_cast<Block>(players[1]);
+
+    p1->draw(window);
+    p2->draw(window);
 
     window->display();
 }

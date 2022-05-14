@@ -2,17 +2,30 @@
 
 #include <utility>
 #include <SFML/Graphics.hpp>
+#include "ObjectType.hpp"
 
 class Object {
+protected:
 	std::string name;
-	std::string type;
-	int height;
-	int width;
-	std::pair<int, int> position;
+	ObjectType type;
+	// int height;
+	// int width;
+
+	// std::pair<int, int> position;
 
 public:
-	~Object() {}
-	std::string getName() {}
-	std::string getType() {}
-	virtual void draw(std::unique_ptr<sf::RenderWindow> &window) {}
+	Object() {}
+	// Object(std::string name);
+	Object(std::string name) : name(name) {} // non-inlining throws error :/
+	virtual ~Object() {}
+	virtual std::string getName() = 0;
+	virtual ObjectType getType() = 0;
+	virtual sf::Vector2f getPosition() = 0;
+	virtual sf::FloatRect getGlobalBounds() = 0;
+
+	virtual void setName(std::string) = 0;
+	virtual void setType(ObjectType type) = 0;
+
+	virtual void move(float dirX, float dirY) = 0;
+	virtual void draw(std::unique_ptr<sf::RenderWindow> &window) = 0;
 };

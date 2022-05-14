@@ -6,6 +6,9 @@
 
 #include "Context/GameContext.hpp"
 
+// class Object;
+// using ObjectPtr = std::unique
+
 class Engine {
 	std::unique_ptr<GameContext> gameContext;
 
@@ -23,6 +26,7 @@ public:
 
 	bool isRunning();
     void pollEvents();
+    void handlePlayerControl();
     void update();
     void render();
 };

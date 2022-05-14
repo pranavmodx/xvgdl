@@ -5,8 +5,7 @@ GameContext::GameContext() {
 }
 
 int GameContext::parseGameDefinition(std::string filePath) {
-	// Again relative path issues :/
-	std::string schemaPath = "/Users/pranavmodx/Dev/git_clones/xvgdl/schema/xvgdl.xsd";
+	std::string schemaPath = "schema/xvgdl.xsd";
 
 	XVGDLValidator validator;
     XMLPlatformUtils::Initialize();
@@ -24,23 +23,37 @@ int GameContext::parseGameDefinition(std::string filePath) {
 	}
 
 	pugi::xml_node gameDefinition = doc.first_child();
-	for (const pugi::xml_node &tag : gameDefinition) {
-		std::string tagName = tag.name();
+	for (const pugi::xml_node &component : gameDefinition) {
+		std::string tagName = component.name();
 
 		if (tagName == PROPERTY) {
 			if (!properties)
 				properties = std::make_unique<Properties>();
-			parseProperty(tag);
+			parseProperty(component);
 		} else if (tagName == CONTROLS) {
 			controls = std::make_unique<Controls>();
-			parseControl(tag);
+			parseControl(component);
 		} else if (tagName == MAP) {
 			map = std::make_unique<Map>();
-			parseMap(tag);
+			parseMap(component);
+		} else if (tagName == PLAYERS) {
+			parsePlayers(component);
 		} else if (tagName == OBJECTS) {
-			parseObjects(tag);
+			parseObjects(component);
+		} else if (tagName == RULES) {
+			parseRule(component);
 		}
 	}
+
+	RulePtr rule = std::make_unique<Rule>("somename", RuleType::Collision);
+	RuleActionPtr ruleAction = std::make_unique<RuleAction>("block1", RuleActionType::SpeedUp);
+	RuleActionPtr ruleAction2 = std::make_unique<RuleAction>("block2", RuleActionType::SpeedUp);
+	rule->addRuleAction(std::move(ruleAction));
+	rule->addRuleAction(std::move(ruleAction2));
+	if (rules.find(RuleType::Collision) == rules.end()) {
+		rules[RuleType::Collision] = std::vector<RulePtr>{};
+	}
+	rules[RuleType::Collision].emplace_back(std::move(rule));
 
 	return 1;
 }
@@ -69,17 +82,93 @@ void GameContext::parseMap(const pugi::xml_node &map) {
         }
 }
 
-void GameContext::parseObjects(const pugi::xml_node &object) {
-	for (pugi::xml_attribute attr = object.first_child().first_attribute(); attr; attr = attr.next_attribute())
+void GameContext::parseObjects(const pugi::xml_node &xmlObjects) {
+	for (pugi::xml_node object : xmlObjects.children())
         {
-            std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
-			// controls.setControl(attr.value());
-			std::shared_ptr<Block> obj = std::make_shared<Block>();
-			ObjectPtr object = std::dynamic_pointer_cast<Object>(obj);
-			objects.push_back(object);
+			for (pugi::xml_attribute attr : object.attributes()) {
+            	std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
+
+				std::string name = attr.name(), value = attr.value();
+
+				if (name == "name") {
+					// controls.setControl(attr.value());
+					std::shared_ptr<Block> obj = std::make_shared<Block>(value);
+					ObjectPtr object = std::static_pointer_cast<Object>(obj);
+				}
+			}
         }
 }
 
-std::vector<ObjectPtr> GameContext::getObjects() {
-	return objects;
+void GameContext::parsePlayers(const pugi::xml_node &xmlPlayers) {
+	for (pugi::xml_node object : xmlPlayers.children())
+        {
+			for (pugi::xml_attribute attr : object.attributes()) {
+            	std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
+
+				std::string name = attr.name(), value = attr.value();
+
+				if (name == "name") {
+					// controls.setControl(attr.value());
+					std::shared_ptr<Block> obj = std::make_shared<Block>(value);
+					ObjectPtr player = std::static_pointer_cast<Object>(obj);
+					std::cout << player->getName();
+					if (objects.find(ObjectType::Player) == objects.end())
+						objects[ObjectType::Player] = std::vector<ObjectPtr> {player};
+					else
+						objects[ObjectType::Player].push_back(player);
+				}
+			}
+        }
+}
+
+void GameContext::parseRule(const pugi::xml_node &xmlRules) {
+	// for (pugi::xml_node rule : rules.children())
+    //     {
+	// 		for (auto att : rule.attributes())
+	// 			std::cout << att.name() << " " << att.value();
+	// 		for (auto obj : rule.children()) {
+    //         	for (pugi::xml_attribute attr : obj.attributes()) {
+	// 				std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
+	// 			}
+	// 		}
+    //     }
+
+	// RulePtr rule = std::make_unique<Rule>("somename", RuleType::Collision);
+	// RuleActionPtr ruleAction = std::make_unique<RuleAction>("block1", RuleActionType::SpeedUp);
+	// rule->addRuleAction(std::move(ruleAction));
+	// if (rules.find(RuleType::Collision) == rules.end())
+	// 	rules[RuleType::Collision] = std::vector<RulePtr>{};
+	// rules[RuleType::Collision].emplace_back(std::move(rule));
+	// std::cout << "here is fine";
+}
+
+std::vector<ObjectPtr> GameContext::getPlayers() {
+	return objects[ObjectType::Player];
+}
+
+std::vector<ObjectPtr> GameContext::getObjectsByType(ObjectType objType) {
+	return objects[objType];
+}
+
+ObjectPtr GameContext::getObject(std::string objName) {
+	// std::cout << objects[ObjectType::Player].size();
+	for (auto objPair : objects) {
+		// if (objPair.first == objName) // type is enum, name is string : handle this
+		// if (objName == "block")
+		// 	return objPair.second.back();
+		for (auto obj : objPair.second) {
+			if (obj->getName() == objName)
+				return obj;
+		}
+	}
+	return nullptr;
+}
+
+void GameContext::processRules() {
+	if (rules.find(RuleType::Collision) == rules.end()) {
+		std::cout << "no rule to process!\n";
+		return;
+	}
+	for (auto &rule: rules[RuleType::Collision])
+        rule->apply(this);
 }

@@ -1,13 +1,17 @@
 #pragma once
 
 #include "Object.hpp"
+#include "ObjectType.hpp"
 
-class Player : Object {
-	int initialLives;
-	int currentLives;
-	int health;
-
+class Player : public Object {
 public:
-	std::string getName() {} // define later
-	std::string getType() {}
+	Player() {}
+	Player(std::string name);
+	virtual ~Player() {}
+	virtual void moveController(bool useAlternate=false) = 0;
+
+	void setType(ObjectType type);
+	ObjectType getType();
+
+	virtual std::string getName();
 };

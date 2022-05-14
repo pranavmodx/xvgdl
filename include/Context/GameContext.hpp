@@ -12,24 +12,38 @@
 #include "Component/Object/Object.hpp"
 #include "Component/Object/Player.hpp"
 #include "Component/Object/Block.hpp"
+#include "Component/Rule/Rule.hpp"
+
+#include "Component/Object/ObjectType.hpp"
+#include "Component/Rule/RuleType.hpp"
 
 using PropertiesPtr = std::unique_ptr<Properties>;
 using ControlsPtr = std::unique_ptr<Controls>;
 using MapPtr = std::unique_ptr<Map>;
 using ObjectPtr = std::shared_ptr<Object>;
+using PlayerPtr = std::shared_ptr<Player>;
+using BlockPtr = std::shared_ptr<Block>;
+using RulePtr = std::unique_ptr<Rule>;
 
 class GameContext {
 	PropertiesPtr properties;
 	ControlsPtr controls;
 	MapPtr map;
-	std::vector<ObjectPtr> objects;
+	std::unordered_map<ObjectType, std::vector<ObjectPtr>> objects;
+	std::unordered_map<RuleType, std::vector<RulePtr>> rules;
+
 public:
 	GameContext();
 	int parseGameDefinition(std::string filePath);
 	void parseProperty(const pugi::xml_node &property);
 	void parseControl(const pugi::xml_node &control);
 	void parseMap(const pugi::xml_node &map);
-	void parseObjects(const pugi::xml_node &object);
+	void parseObjects(const pugi::xml_node &objects);
+	void parsePlayers(const pugi::xml_node &players);
+	void parseRule(const pugi::xml_node &rule);
 
-	std::vector<ObjectPtr> getObjects();
+	std::vector<ObjectPtr> getPlayers();
+	std::vector<ObjectPtr> getObjectsByType(ObjectType objType);
+	ObjectPtr getObject(std::string objName);
+	void processRules();
 };
