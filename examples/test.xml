@@ -13,15 +13,15 @@
 	<rules>
 		<rule name="BallHit1" type="collision">
 			<ruleAction objectName="block1" />
-			<ruleAction objectName="ball" />
+			<ruleAction objectName="ball" result="bounce" />
 		</rule>
 		<rule name="BallHit2" type="collision">
 			<ruleAction objectName="block2" />
-			<ruleAction objectName="ball" />
+			<ruleAction objectName="ball" result="bounce" />
 		</rule>
 	</rules>
 	<endConditions>
-		<endCondition type="Timeout" property="timeout" value="0" />
-		<endCondition type="NoObjectsPresent" objectNames="block1,block2" />
+		<endCondition type="timeout" property="timeout" value="0" />
+		<endCondition type="no-objects-present" objectNames="block1,block2" />
 	</endConditions>
 </gameDefinition>

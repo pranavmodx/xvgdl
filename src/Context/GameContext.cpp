@@ -43,7 +43,9 @@ int GameContext::parseGameDefinition(std::string filePath) {
 		} else if (tagName == OBJECTS) {
 			parseObjects(component);
 		} else if (tagName == RULES) {
-			parseRule(component);
+			parseRules(component);
+		} else if (tagName == END_CONDITIONS) {
+			parseEndConditions(component);
 		}
 	}
 
@@ -124,7 +126,7 @@ void GameContext::parsePlayers(const pugi::xml_node &xmlPlayers) {
         }
 }
 
-void GameContext::parseRule(const pugi::xml_node &xmlRules) {
+void GameContext::parseRules(const pugi::xml_node &xmlRules) {
 	for (pugi::xml_node rule : xmlRules.children())
         {
 			for (auto att : rule.attributes())
@@ -145,6 +147,22 @@ void GameContext::parseRule(const pugi::xml_node &xmlRules) {
 		rules[RuleType::Collision] = std::vector<RulePtr>{};
 	}
 	rules[RuleType::Collision].emplace_back(std::move(rule));
+}
+
+void GameContext::parseEndConditions(const pugi::xml_node &xmlEndConditions) {
+	for (pugi::xml_node xmlEndCondition : xmlEndConditions.children())
+	{
+		for (auto att : xmlEndCondition.attributes())
+			std::cout << att.name() << " " << att.value();
+		for (auto obj : xmlEndCondition.children()) {
+			for (pugi::xml_attribute attr : obj.attributes()) {
+				std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
+			}
+		}
+	}
+
+	// temporarily hard-coded -> move to for loop
+	endConditions.emplace_back(EndCondition("timout", EndConditionType::Timeout));
 }
 
 std::vector<ObjectPtr> GameContext::getPlayers() {
@@ -176,4 +194,13 @@ void GameContext::processRules() {
 	}
 	for (auto &rule: rules[RuleType::Collision])
         rule->apply(this);
+}
+
+void GameContext::processEndConditions(sf::Clock &clock) {
+	if (endConditions.size() == 0) {
+		std::cout << "no end game conditions to process!\n";
+		return;
+	}
+	for (auto &condition: endConditions)
+        condition.apply(this, clock);
 }

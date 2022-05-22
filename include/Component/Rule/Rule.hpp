@@ -4,7 +4,7 @@
 #include <vector>
 #include "Component/Object/Object.hpp"
 #include "RuleType.hpp"
-#include "Component/RuleAction/RuleAction.hpp"
+#include "RuleAction.hpp"
 
 class GameContext; // forward declaration
 using GameContextPtr = std::unique_ptr<GameContext>;

@@ -35,7 +35,7 @@ void Engine::initVariables()
 void Engine::initWindow()
 {
     window = std::make_unique<sf::RenderWindow>(videoMode, "XVGDL");
-    window->setFramerateLimit(60);
+    window->setFramerateLimit(60); // fixed for now; adapt to all fps later
 }
 
 bool Engine::isRunning()
@@ -64,14 +64,13 @@ void Engine::pollEvents()
 
     p1->moveController();
     p2->moveController(true);
-
-    gameContext->processRules();
 }
 
 void Engine::update()
 {
     this->pollEvents();
-
+    gameContext->processRules();
+    gameContext->processEndConditions(clock);
 }
 
 void Engine::render()

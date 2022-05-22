@@ -1,6 +1,6 @@
 #include <iostream>
-#include "Component/RuleAction/RuleActionType.hpp"
-#include "Component/RuleAction/RuleAction.hpp"
+#include "Component/Rule/RuleActionType.hpp"
+#include "Component/Rule/RuleAction.hpp"
 #include "Context/GameContext.hpp" // imp to include this here (in .cpp and not .hpp to avoid circular dependency)
 // https://pvigier.github.io/2018/02/09/dependency-graph.html
 
