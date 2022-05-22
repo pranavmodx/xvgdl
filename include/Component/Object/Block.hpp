@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include "ObjectType.hpp"
 #include "Player.hpp"
 
@@ -12,7 +11,7 @@ public:
 	float speed;
 
 public:
-	Block(std::string name);
+	Block(const std::string &name, const std::string &position = "left");
 	~Block() {}
 	// Block(int x, int y);
 
@@ -22,7 +21,7 @@ public:
 	sf::Vector2f getPosition();
 	sf::FloatRect getGlobalBounds();
 
-	void setName(std::string name);
+	void setName(const std::string &name);
 	void setType(ObjectType type);
 
 	void move(float dirX, float dirY);

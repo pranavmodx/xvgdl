@@ -3,21 +3,21 @@
 		<control />
 	</controls> -->
 	<property key="timeout" value="20000" />
-	<players number="1" maxNumber="1" minNumber="1">
-		<player name="block1" type="block1" />
-		<player name="block2" type="block2" />
+	<players>
+		<player name="block1" type="block1" position="left" />
+		<player name="block2" type="block2" position="right" />
 	</players>
-	<!-- <objects>
-		<object name="block1" type="block1" />
-		<object name="block2" type="block2" />
-	</objects> -->
-	<events>
-		<event type="SpawnItem" objectName="block" timer="2" />
-	</events>
+	<objects>
+		<object name="ball" type="ball" />
+	</objects>
 	<rules>
-		<rule name="ScoreTransfer" type="collision">
-			<ruleAction objectName="block1" result="speed-up" value="100" />
-			<ruleAction objectName="block2" result="speed-up" value="100" />
+		<rule name="BallHit1" type="collision">
+			<ruleAction objectName="block1" />
+			<ruleAction objectName="ball" />
+		</rule>
+		<rule name="BallHit2" type="collision">
+			<ruleAction objectName="block2" />
+			<ruleAction objectName="ball" />
 		</rule>
 	</rules>
 	<endConditions>

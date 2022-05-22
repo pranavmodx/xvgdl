@@ -1,7 +1,11 @@
 #include "Component/Object/Block.hpp"
 
-Block::Block(std::string name) : Player(name), block(sf::Vector2f(100, 100)), speed(10.0f) {
-	block.setPosition(sf::Vector2f(100, 100));
+Block::Block(const std::string &name, const std::string &position) : Player(name), block(sf::Vector2f(100, 100)), speed(10.0f) {
+	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+	if (position == "left")
+		block.setPosition(sf::Vector2f(100, desktop.height / 2 - 50));
+	else if (position == "right")
+		block.setPosition(sf::Vector2f(desktop.width - 200, desktop.height / 2 - 50));
 }
 
 void Block::draw(std::unique_ptr<sf::RenderWindow> &window) {
@@ -69,7 +73,7 @@ void Block::moveController(bool useAlternate) {
 	}
 }
 
-void Block::setName(std::string name) {
+void Block::setName(const std::string &name) {
 
 }
 

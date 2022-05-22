@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "Validator/Validator.hpp"
+#include <validator/Validator.hpp>
 
 
 XVGDLValidator::XVGDLValidator() {

@@ -16,14 +16,14 @@ protected:
 public:
 	Object() {}
 	// Object(std::string name);
-	Object(std::string name) : name(name) {} // non-inlining throws error :/
+	Object(const std::string &name) : name(name) {} // non-inlining throws error :/
 	virtual ~Object() {}
 	virtual std::string getName() = 0;
 	virtual ObjectType getType() = 0;
 	virtual sf::Vector2f getPosition() = 0;
 	virtual sf::FloatRect getGlobalBounds() = 0;
 
-	virtual void setName(std::string) = 0;
+	virtual void setName(const std::string &name) = 0;
 	virtual void setType(ObjectType type) = 0;
 
 	virtual void move(float dirX, float dirY) = 0;

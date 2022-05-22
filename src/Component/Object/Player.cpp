@@ -1,6 +1,6 @@
 #include "Component/Object/Player.hpp"
 
-Player::Player(std::string name) : Object(name) {
+Player::Player(const std::string &name) : Object(name) {
 
 }
 

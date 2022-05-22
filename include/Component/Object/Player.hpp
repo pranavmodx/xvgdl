@@ -6,7 +6,7 @@
 class Player : public Object {
 public:
 	Player() {}
-	Player(std::string name);
+	Player(const std::string &name);
 	virtual ~Player() {}
 	virtual void moveController(bool useAlternate=false) = 0;
 

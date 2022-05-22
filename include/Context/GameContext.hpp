@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "Token.hpp"
-#include "Validator/Validator.hpp"
+#include <validator/Validator.hpp>
 #include "pugixml/pugixml.hpp"
 
 #include "Component/Properties.hpp"
@@ -12,6 +12,8 @@
 #include "Component/Object/Object.hpp"
 #include "Component/Object/Player.hpp"
 #include "Component/Object/Block.hpp"
+#include "Component/Object/Ball.hpp"
+#include "Component/Object/Player.hpp"
 #include "Component/Rule/Rule.hpp"
 
 #include "Component/Object/ObjectType.hpp"
@@ -22,7 +24,6 @@ using ControlsPtr = std::unique_ptr<Controls>;
 using MapPtr = std::unique_ptr<Map>;
 using ObjectPtr = std::shared_ptr<Object>;
 using PlayerPtr = std::shared_ptr<Player>;
-using BlockPtr = std::shared_ptr<Block>;
 using RulePtr = std::unique_ptr<Rule>;
 
 class GameContext {
