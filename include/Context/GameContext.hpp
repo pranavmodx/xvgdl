@@ -14,6 +14,7 @@
 #include "Component/Object/Block.hpp"
 #include "Component/Object/Ball.hpp"
 #include "Component/Object/Player.hpp"
+#include "Component/Event/Event.hpp"
 #include "Component/Rule/Rule.hpp"
 #include "Component/EndCondition/EndCondition.hpp"
 
@@ -33,8 +34,9 @@ class GameContext {
 	ControlsPtr controls;
 	MapPtr map;
 	std::unordered_map<ObjectType, std::vector<ObjectPtr>> objects;
-	std::unordered_map<RuleType, std::vector<RulePtr>> rules;
+	std::unordered_map<RuleType, std::vector<RulePtr>> rules; // ptr isn't needed; remove later
 	std::vector<EndCondition> endConditions;
+	std::vector<Event> events;
 
 public:
 	GameContext();
@@ -44,12 +46,14 @@ public:
 	void parseMap(const pugi::xml_node &map);
 	void parseObjects(const pugi::xml_node &objects);
 	void parsePlayers(const pugi::xml_node &players);
-	void parseRules(const pugi::xml_node &rule);
-	void parseEndConditions(const pugi::xml_node &rule);
+	void parseEvents(const pugi::xml_node &events);
+	void parseRules(const pugi::xml_node &rules);
+	void parseEndConditions(const pugi::xml_node &endCondition);
 
 	std::vector<ObjectPtr> getPlayers();
 	std::vector<ObjectPtr> getObjectsByType(ObjectType objType);
 	ObjectPtr getObject(std::string objName);
+	void processEvents();
 	void processRules();
 	void processEndConditions(sf::Clock &clock);
 };

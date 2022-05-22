@@ -32,16 +32,18 @@ int GameContext::parseGameDefinition(std::string filePath) {
 			if (!properties)
 				properties = std::make_unique<Properties>();
 			parseProperty(component);
-		} else if (tagName == CONTROLS) {
-			controls = std::make_unique<Controls>();
-			parseControl(component);
-		} else if (tagName == MAP) {
-			map = std::make_unique<Map>();
-			parseMap(component);
+		// } else if (tagName == CONTROLS) {
+		// 	controls = std::make_unique<Controls>();
+		// 	parseControl(component);
+		// } else if (tagName == MAP) {
+		// 	map = std::make_unique<Map>();
+		// 	parseMap(component);
 		} else if (tagName == PLAYERS) {
 			parsePlayers(component);
 		} else if (tagName == OBJECTS) {
 			parseObjects(component);
+		} else if (tagName == EVENTS) {
+			parseEvents(component);
 		} else if (tagName == RULES) {
 			parseRules(component);
 		} else if (tagName == END_CONDITIONS) {
@@ -126,14 +128,32 @@ void GameContext::parsePlayers(const pugi::xml_node &xmlPlayers) {
         }
 }
 
+void GameContext::parseEvents(const pugi::xml_node &xmlEvents) {
+	for (pugi::xml_node xmlEvent : xmlEvents.children())
+	{
+		std::string name;
+
+		for (pugi::xml_attribute attr : xmlEvent.attributes()) {
+			std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
+
+			std::string attrName = attr.name();
+			// done since order of attr can be different
+			if (attrName == "name")
+				name = attr.value();
+		}
+	}
+
+	events.emplace_back(Event(EventType::SpawnObject, ObjectType::Ball, 5));
+}
+
 void GameContext::parseRules(const pugi::xml_node &xmlRules) {
 	for (pugi::xml_node rule : xmlRules.children())
         {
 			for (auto att : rule.attributes())
-				std::cout << att.name() << " " << att.value();
+				// std::cout << att.name() << " " << att.value();
 			for (auto obj : rule.children()) {
             	for (pugi::xml_attribute attr : obj.attributes()) {
-					std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
+					// std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
 				}
 			}
         }
@@ -153,10 +173,10 @@ void GameContext::parseEndConditions(const pugi::xml_node &xmlEndConditions) {
 	for (pugi::xml_node xmlEndCondition : xmlEndConditions.children())
 	{
 		for (auto att : xmlEndCondition.attributes())
-			std::cout << att.name() << " " << att.value();
+			// std::cout << att.name() << " " << att.value();
 		for (auto obj : xmlEndCondition.children()) {
 			for (pugi::xml_attribute attr : obj.attributes()) {
-				std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
+				// std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
 			}
 		}
 	}
@@ -185,6 +205,15 @@ ObjectPtr GameContext::getObject(std::string objName) {
 		}
 	}
 	return nullptr;
+}
+
+void GameContext::processEvents() {
+	if (events.size() == 0) {
+		std::cout << "no events to process!\n";
+		return;
+	}
+	for (auto &ev: events)
+        ev.apply(this);
 }
 
 void GameContext::processRules() {

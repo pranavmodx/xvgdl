@@ -13,5 +13,5 @@ void EndCondition::apply(GameContext* const gameContext, sf::Clock &clock) {
 
 void EndCondition::handleTimeout(sf::Clock &clock) {
     sf::Time elapsed1 = clock.getElapsedTime();
-    std::cout << elapsed1.asSeconds() << std::endl;
+    // std::cout << elapsed1.asSeconds() << std::endl;
 }

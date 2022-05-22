@@ -10,6 +10,9 @@
 	<objects>
 		<object name="ball" type="ball" />
 	</objects>
+	<events>
+		<event type="spawn-object" objectName="ball" timer="5000" />
+	</events>
 	<rules>
 		<rule name="BallHit1" type="collision">
 			<ruleAction objectName="block1" />

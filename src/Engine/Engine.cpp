@@ -69,6 +69,7 @@ void Engine::pollEvents()
 void Engine::update()
 {
     this->pollEvents();
+    gameContext->processEvents();
     gameContext->processRules();
     gameContext->processEndConditions(clock);
 }
