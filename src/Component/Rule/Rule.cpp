@@ -30,7 +30,7 @@ void Rule::handleCollision(GameContext* gameContext) {
 	// std::cout << obj2->getName();
 
 	if (obj1->getGlobalBounds().intersects(obj2->getGlobalBounds())) {
-		std::cout << "collided!";
+		// std::cout << "collided!";
 		// apply rule action
 		ruleActions[0]->apply(gameContext);
 		ruleActions[1]->apply(gameContext);

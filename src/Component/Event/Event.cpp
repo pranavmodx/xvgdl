@@ -13,5 +13,5 @@ void Event::apply(GameContext *gameContext) {
 }
 
 void Event::spawnObject(ObjectType type, float timeInterval) {
-    std::cout << "spawning" << std::endl;
+    // std::cout << "spawning" << std::endl;
 }

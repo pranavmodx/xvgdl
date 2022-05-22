@@ -1,11 +1,12 @@
 #include <SFML/Graphics.hpp>
 
 #include "Engine/Engine.hpp"
-#include "Component/Object/Block.hpp"
-#include "Component/Object/Ball.hpp"
 
 int Engine::loadGameContext(std::string filePath)
 {
+    auto debug = std::make_shared<Debug>("debug here!", sf::Vector2f(1.f, 1.f));
+    debugs.push_back(debug);
+
     gameContext = std::make_unique<GameContext>();
     if (gameContext->parseGameDefinition(filePath))
         return 1;
@@ -89,6 +90,9 @@ void Engine::render()
     p2->draw(window);
     ball->draw(window);
     ball->update(window);
+
+    for (auto dbg: debugs)
+        dbg->draw(window);
 
     window->display();
 }
