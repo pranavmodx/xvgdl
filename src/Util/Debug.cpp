@@ -23,6 +23,6 @@ void Debug::initText() {
     text.setString(textStr);
 }
 
-void Debug::draw(std::unique_ptr<sf::RenderWindow> &window) {
+void Debug::draw(sf::RenderWindow *window) {
     window->draw(text);
 }

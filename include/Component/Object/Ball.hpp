@@ -1,7 +1,9 @@
 #pragma once
 
+#include <vector>
 #include "Object.hpp"
 #include "ObjectType.hpp"
+#include "Component/ScoreBoard/ScoreBoard.hpp"
 
 class Ball : public Object {
 public:
@@ -12,6 +14,7 @@ public:
 	int timer;
 
 	static ObjectType type;
+	static std::vector<int> initDirY;
 
 public:
 	Ball();
@@ -34,5 +37,5 @@ public:
 
 	void draw(std::unique_ptr<sf::RenderWindow> &window);
 	void move(float dirX, float dirY);
-	void update(const std::unique_ptr<sf::RenderWindow> &window);
+	void update(const std::unique_ptr<sf::RenderWindow> &window, ScoreBoard *scoreBoard);
 };

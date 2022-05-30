@@ -4,9 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "Context/GameContext.hpp"
 #include "Util/Debug.hpp"
-
-// class Object;
-// using ObjectPtr = std::unique
+#include "Component/ScoreBoard/ScoreBoard.hpp"
 
 using DebugPtr = std::shared_ptr<Debug>;
 
@@ -19,6 +17,7 @@ class Engine {
     sf::Clock clock;
 
     std::vector<DebugPtr> debugs; // stack alloc throws seg fault; investigate later
+    std::unique_ptr<ScoreBoard> scoreBoard;
 
 	void initVariables();
     void initWindow();

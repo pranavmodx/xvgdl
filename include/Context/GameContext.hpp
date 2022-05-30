@@ -38,6 +38,11 @@ class GameContext {
 	std::vector<EndCondition> endConditions;
 	std::vector<Event> events;
 
+	// score system
+	// map name to score
+	// if any score > threshold, quit game
+	// draw this from engine
+
 public:
 	GameContext();
 	int parseGameDefinition(std::string filePath);

@@ -1,6 +1,6 @@
 #include "Component/Object/Block.hpp"
 
-Block::Block(const std::string &name, const std::string &position) : Player(name), block(sf::Vector2f(100, 100)), speed(10.0f) {
+Block::Block(const std::string &name, const std::string &position) : Player(name), block(sf::Vector2f(20, 300)), speed(10.0f) {
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 	if (position == "left")
 		block.setPosition(sf::Vector2f(100, desktop.height / 2 - 50));
@@ -26,6 +26,9 @@ sf::FloatRect Block::getGlobalBounds() {
 }
 
 void Block::moveController(bool useAlternate) {
+	if (isAI)
+		return;
+
 	sf::VideoMode videoMode = sf::VideoMode::getDesktopMode();
 
 	if (!useAlternate) {
@@ -87,4 +90,20 @@ ObjectType Block::getType() {
 
 void Block::setType(ObjectType type) {
 	type = ObjectType::Block;
+}
+
+void Block::setIsAI() {
+	isAI = true;
+}
+
+bool Block::getIsAI() {
+	return isAI;
+}
+
+void Block::AIController(sf::Vector2f ballPos) {
+	speed = 8;
+	if (block.getPosition().y + block.getSize().y > ballPos.y)
+		move(0.f, -1.f);
+	else if (block.getPosition().y + block.getSize().y < ballPos.y)
+		move(0.f, 1.f);
 }

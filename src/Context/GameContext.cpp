@@ -163,10 +163,18 @@ void GameContext::parseRules(const pugi::xml_node &xmlRules) {
 	RuleActionPtr ruleAction2 = std::make_unique<RuleAction>("ball", RuleActionType::Bounce);
 	rule->addRuleAction(std::move(ruleAction));
 	rule->addRuleAction(std::move(ruleAction2));
+
+	RulePtr rule2 = std::make_unique<Rule>("someothername", RuleType::Collision);
+	RuleActionPtr rr = std::make_unique<RuleAction>("block2", RuleActionType::SpeedUp);
+	RuleActionPtr rr2 = std::make_unique<RuleAction>("ball", RuleActionType::Bounce);
+	rule2->addRuleAction(std::move(rr));
+	rule2->addRuleAction(std::move(rr2));
+
 	if (rules.find(RuleType::Collision) == rules.end()) {
 		rules[RuleType::Collision] = std::vector<RulePtr>{};
 	}
 	rules[RuleType::Collision].emplace_back(std::move(rule));
+	rules[RuleType::Collision].emplace_back(std::move(rule2));
 }
 
 void GameContext::parseEndConditions(const pugi::xml_node &xmlEndConditions) {
