@@ -38,6 +38,8 @@ std::string getStringForEndConditionType(EndConditionType type) {
     switch(type) {
         case EndConditionType::Timeout:
             return "timeout";
+        case EndConditionType::MaxScoreReached:
+            return "maxScoreReached";
         default:
             return "";
     }

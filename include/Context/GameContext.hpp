@@ -58,7 +58,9 @@ public:
 	std::vector<ObjectPtr> getPlayers();
 	std::vector<ObjectPtr> getObjectsByType(ObjectType objType);
 	ObjectPtr getObject(std::string objName);
+
+	// prolly should've defined these in Engine ; see later
 	void processEvents();
 	void processRules();
-	void processEndConditions(sf::Clock &clock);
+	void processEndConditions(sf::Clock &clock, int score=0);
 };

@@ -191,6 +191,7 @@ void GameContext::parseEndConditions(const pugi::xml_node &xmlEndConditions) {
 
 	// temporarily hard-coded -> move to for loop
 	endConditions.emplace_back(EndCondition("timout", EndConditionType::Timeout));
+	endConditions.emplace_back(EndCondition("maxScoreReached", EndConditionType::MaxScoreReached));
 }
 
 std::vector<ObjectPtr> GameContext::getPlayers() {
@@ -233,11 +234,12 @@ void GameContext::processRules() {
         rule->apply(this);
 }
 
-void GameContext::processEndConditions(sf::Clock &clock) {
+void GameContext::processEndConditions(sf::Clock &clock, int score) {
 	if (endConditions.size() == 0) {
 		std::cout << "no end game conditions to process!\n";
 		return;
 	}
-	for (auto &condition: endConditions)
-        condition.apply(this, clock);
+	for (auto &condition: endConditions) {
+        condition.apply(this, clock, score);
+	}
 }

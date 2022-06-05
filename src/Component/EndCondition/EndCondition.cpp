@@ -8,9 +8,16 @@ EndCondition::EndCondition(std::string name, EndConditionType type) : name(name)
     
 }
 
-void EndCondition::apply(GameContext* const gameContext, sf::Clock &clock) {
-    if (type == EndConditionType::Timeout) {
-		handleTimeout(clock);
+void EndCondition::apply(GameContext* const gameContext, sf::Clock &clock, int score) {
+    switch (type) {
+        case EndConditionType::Timeout:
+		    handleTimeout(clock);
+            break;
+        case EndConditionType::MaxScoreReached:
+            handleMaxScoreReached(score);
+            break;
+        default:
+            break;
 	}
 }
 
@@ -23,4 +30,11 @@ void EndCondition::handleTimeout(sf::Clock &clock) {
     // }
     // std::stringstream ss;
     // ss << elapsed1.asSeconds();
+}
+
+void EndCondition::handleMaxScoreReached(int score) {
+    if (score == 3) {
+        std::cout << "max score ! ";
+        exit(0);
+    }
 }

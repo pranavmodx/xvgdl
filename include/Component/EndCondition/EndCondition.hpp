@@ -15,6 +15,9 @@ class EndCondition {
 
 public:
 	EndCondition(std::string name, EndConditionType type);
-	void apply(GameContext* const gameContext, sf::Clock &clock);
+	void apply(GameContext* const gameContext, sf::Clock &clock, int score=0);
 	void handleTimeout(sf::Clock &clock);
+	void handleMaxScoreReached(int score);
+
+	inline EndConditionType getType() { return type; }
 };
