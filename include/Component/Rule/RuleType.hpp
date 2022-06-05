@@ -5,3 +5,4 @@ enum class RuleType {
 };
 
 std::string getStringForRuleType(RuleType type);
+RuleType getRuleTypeFromString(std::string rule);

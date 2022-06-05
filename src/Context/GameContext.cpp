@@ -81,7 +81,7 @@ void GameContext::parseMap(const pugi::xml_node &map) {
 void GameContext::parseObjects(const pugi::xml_node &xmlObjects) {
 	for (pugi::xml_node xmlObject : xmlObjects.children())
         {
-			std::string name;
+			std::string name, type;
 
 			for (pugi::xml_attribute attr : xmlObject.attributes()) {
             	// std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
@@ -90,21 +90,26 @@ void GameContext::parseObjects(const pugi::xml_node &xmlObjects) {
 				// done since order of attr can be different
 				if (attrName == "name")
 					name = attr.value();
+				else if (attrName == "type")
+					type = attr.value();
 			}
 
-			std::shared_ptr<Ball> obj = std::make_shared<Ball>(name);
-			ObjectPtr objjj = std::static_pointer_cast<Object>(obj);
-			if (objects.find(ObjectType::Object) == objects.end())
-				objects[ObjectType::Object] = std::vector<ObjectPtr> {objjj};
-			else
-				objects[ObjectType::Object].push_back(objjj);
+			if (type == "ball") {
+				std::shared_ptr<Ball> obj = std::make_shared<Ball>(name);
+				ObjectPtr objjj = std::static_pointer_cast<Object>(obj);
+				if (objects.find(ObjectType::Object) == objects.end())
+					objects[ObjectType::Object] = std::vector<ObjectPtr> {objjj};
+				else
+					objects[ObjectType::Object].push_back(objjj);
+			}
         }
 }
 
 void GameContext::parsePlayers(const pugi::xml_node &xmlPlayers) {
 	for (pugi::xml_node object : xmlPlayers.children())
         {
-			std::string name, position = "left";
+			std::string name, type, position = "left";
+			bool isAI = false;
 
 			for (pugi::xml_attribute attr : object.attributes()) {
             	// std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
@@ -115,16 +120,25 @@ void GameContext::parsePlayers(const pugi::xml_node &xmlPlayers) {
 					name = attr.value();
 				else if (attrName == "position")
 					position = attr.value();
+				else if (attrName == "type")
+					type = attr.value();
+				else if (attrName == "isAI")
+					isAI = true;
 			}
 
-			// controls.setControl(attr.value());
-			std::shared_ptr<Block> obj = std::make_shared<Block>(name, position);
-			ObjectPtr player = std::static_pointer_cast<Object>(obj);
-			// std::cout << player->getName();
-			if (objects.find(ObjectType::Player) == objects.end())
-				objects[ObjectType::Player] = std::vector<ObjectPtr> {player};
-			else
-				objects[ObjectType::Player].push_back(player);
+			// todo : controls.setControl(attr.value());
+
+			if (type == "block") { // todo : match using ObjectType;
+				std::shared_ptr<Block> obj = std::make_shared<Block>(name, position);
+				if (isAI)
+					obj->setIsAI();
+				ObjectPtr player = std::static_pointer_cast<Object>(obj);
+				// std::cout << player->getName();
+				if (objects.find(ObjectType::Player) == objects.end())
+					objects[ObjectType::Player] = std::vector<ObjectPtr> {player};
+				else
+					objects[ObjectType::Player].push_back(player);
+			}
         }
 }
 
@@ -134,7 +148,7 @@ void GameContext::parseEvents(const pugi::xml_node &xmlEvents) {
 		std::string name;
 
 		for (pugi::xml_attribute attr : xmlEvent.attributes()) {
-			std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
+			// std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
 
 			std::string attrName = attr.name();
 			// done since order of attr can be different
@@ -147,51 +161,59 @@ void GameContext::parseEvents(const pugi::xml_node &xmlEvents) {
 }
 
 void GameContext::parseRules(const pugi::xml_node &xmlRules) {
-	for (pugi::xml_node rule : xmlRules.children())
+	for (pugi::xml_node xmlRule : xmlRules.children())
         {
-			for (auto att : rule.attributes())
+			RulePtr rule;
+			std::string ruleTypeInString;
+
+			for (auto att : xmlRule.attributes()) {
 				// std::cout << att.name() << " " << att.value();
-			for (auto obj : rule.children()) {
-            	for (pugi::xml_attribute attr : obj.attributes()) {
-					// std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
+				std::string attrName = att.name();
+
+				if (attrName == "type") {
+					ruleTypeInString = att.value();
+					rule = std::make_unique<Rule>("somename", getRuleTypeFromString(ruleTypeInString));
 				}
 			}
-        }
 
-	RulePtr rule = std::make_unique<Rule>("somename", RuleType::Collision);
-	RuleActionPtr ruleAction = std::make_unique<RuleAction>("block1", RuleActionType::SpeedUp);
-	RuleActionPtr ruleAction2 = std::make_unique<RuleAction>("ball", RuleActionType::Bounce);
-	rule->addRuleAction(std::move(ruleAction));
-	rule->addRuleAction(std::move(ruleAction2));
+			for (auto obj : xmlRule.children()) {
+				std::string objectName, ruleActionTypeInString;
+            	for (pugi::xml_attribute attr : obj.attributes()) {
+					// std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
+					std::string attrName = attr.name();
+					if (attrName == "objectName")
+						objectName = attr.value();
+					else if (attrName == "result")
+						ruleActionTypeInString = attr.value();
+				}
+					RuleActionPtr ruleAction = std::make_unique<RuleAction>(objectName, getRuleActionTypeFromString(ruleActionTypeInString));
+					rule->addRuleAction(std::move(ruleAction));
+			}
 
-	RulePtr rule2 = std::make_unique<Rule>("someothername", RuleType::Collision);
-	RuleActionPtr rr = std::make_unique<RuleAction>("block2", RuleActionType::SpeedUp);
-	RuleActionPtr rr2 = std::make_unique<RuleAction>("ball", RuleActionType::Bounce);
-	rule2->addRuleAction(std::move(rr));
-	rule2->addRuleAction(std::move(rr2));
+			RuleType ruleType = getRuleTypeFromString(ruleTypeInString);
+			if (rules.find(ruleType) == rules.end())
+				rules[ruleType] = std::vector<RulePtr>{};
 
-	if (rules.find(RuleType::Collision) == rules.end()) {
-		rules[RuleType::Collision] = std::vector<RulePtr>{};
-	}
-	rules[RuleType::Collision].emplace_back(std::move(rule));
-	rules[RuleType::Collision].emplace_back(std::move(rule2));
+			rules[ruleType].emplace_back(std::move(rule));
+		}
 }
 
 void GameContext::parseEndConditions(const pugi::xml_node &xmlEndConditions) {
 	for (pugi::xml_node xmlEndCondition : xmlEndConditions.children())
 	{
-		for (auto att : xmlEndCondition.attributes())
-			// std::cout << att.name() << " " << att.value();
-		for (auto obj : xmlEndCondition.children()) {
-			for (pugi::xml_attribute attr : obj.attributes()) {
-				// std::cout << " " << attr.name() << "=" << attr.value() << std::endl;
+		std::string type;
+		for (auto att : xmlEndCondition.attributes()) {
+			std::string attrName = att.name();
+
+			if (attrName == "type") {
+				std::cout << att.name() << " " << att.value();
+				type = att.value();
 			}
 		}
-	}
 
-	// temporarily hard-coded -> move to for loop
-	endConditions.emplace_back(EndCondition("timout", EndConditionType::Timeout));
-	endConditions.emplace_back(EndCondition("maxScoreReached", EndConditionType::MaxScoreReached));
+		EndConditionType endType = getEndConditionTypeFromString(type);
+		endConditions.emplace_back(EndCondition("somename", endType));
+	}
 }
 
 std::vector<ObjectPtr> GameContext::getPlayers() {
@@ -218,7 +240,7 @@ ObjectPtr GameContext::getObject(std::string objName) {
 
 void GameContext::processEvents() {
 	if (events.size() == 0) {
-		std::cout << "no events to process!\n";
+		// std::cout << "no events to process!\n";
 		return;
 	}
 	for (auto &ev: events)
@@ -227,7 +249,7 @@ void GameContext::processEvents() {
 
 void GameContext::processRules() {
 	if (rules.find(RuleType::Collision) == rules.end()) {
-		std::cout << "no rule to process!\n";
+		// std::cout << "no rule to process!\n";
 		return;
 	}
 	for (auto &rule: rules[RuleType::Collision])
@@ -236,7 +258,7 @@ void GameContext::processRules() {
 
 void GameContext::processEndConditions(sf::Clock &clock, int score) {
 	if (endConditions.size() == 0) {
-		std::cout << "no end game conditions to process!\n";
+		// std::cout << "no end game conditions to process!\n";
 		return;
 	}
 	for (auto &condition: endConditions) {

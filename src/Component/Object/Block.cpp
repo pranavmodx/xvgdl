@@ -100,8 +100,12 @@ bool Block::getIsAI() {
 	return isAI;
 }
 
-void Block::AIController(sf::Vector2f ballPos) {
-	speed = 8;
+void Block::AIController(sf::Vector2f ballPos, int id) {
+	if (id == 1)
+		speed = 7;
+	else
+		speed = 15;
+
 	if (block.getPosition().y + block.getSize().y > ballPos.y)
 		move(0.f, -1.f);
 	else if (block.getPosition().y + block.getSize().y < ballPos.y)

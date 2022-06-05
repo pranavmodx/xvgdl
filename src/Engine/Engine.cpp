@@ -5,9 +5,6 @@
 
 int Engine::loadGameContext(std::string filePath)
 {
-    // auto debug = std::make_shared<Debug>("debug", sf::Vector2f(1.f, 1.f));
-    // debugs.push_back(debug);
-
     gameContext = std::make_unique<GameContext>();
     if (gameContext->parseGameDefinition(filePath))
         return 1;
@@ -34,11 +31,14 @@ void Engine::initVariables()
     window = nullptr;
     scoreBoard = std::make_unique<ScoreBoard>("0 - 0", sf::Vector2f(desktop.width / 2 - 20, desktop.height / 2 - 50));
     timer = std::make_unique<Timer>("0", sf::Vector2f(desktop.width / 2 - 150, 0.1 * desktop.height));
+    // todo : set position explicitly to get globalBounds 
 }
 
 void Engine::initWindow()
 {
-    window = std::make_unique<sf::RenderWindow>(videoMode, "XVGDL");
+    std::string winTitle = "XVGDL";
+    // todo : get game title from properties and use
+    window = std::make_unique<sf::RenderWindow>(videoMode, winTitle);
     window->setFramerateLimit(60); // fixed for now; adapt to all fps later
 }
 
@@ -69,9 +69,8 @@ void Engine::pollEvents()
     auto objs = gameContext->getObjectsByType(ObjectType::Object);
     auto ball = std::static_pointer_cast<Ball>(objs[0]);
 
-    p1->moveController();
-    // p2->moveController(true);
-    p2->AIController(ball->getPosition());
+    p1->getIsAI() ? p1->AIController(ball->getPosition()) : p1->moveController();
+    p2->getIsAI() ? p2->AIController(ball->getPosition(), 2) : p2->moveController(true);
 }
 
 void Engine::update()

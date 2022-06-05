@@ -1,15 +1,11 @@
 <gameDefinition>
-	<property key="timeout" value="20000" />
 	<players>
-		<player name="block1" type="block1" position="left" />
-		<player name="block2" type="block2" position="right" />
+		<player name="block1" type="block" position="left" isAI="true" />
+		<player name="block2" type="block" position="right" isAI="true" />
 	</players>
 	<objects>
 		<object name="ball" type="ball" />
 	</objects>
-	<events>
-		<event type="spawn-object" objectName="ball" timer="5000" />
-	</events>
 	<rules>
 		<rule name="BallHit1" type="collision">
 			<ruleAction objectName="block1" />
@@ -21,7 +17,7 @@
 		</rule>
 	</rules>
 	<endConditions>
-		<endCondition type="timeout" property="timeout" value="0" />
-		<endCondition type="no-objects-present" objectNames="block1,block2" />
+		<endCondition type="timeout" property="timeout" value="3" />
+		<endCondition type="maxScoreReached" />
 	</endConditions>
 </gameDefinition>

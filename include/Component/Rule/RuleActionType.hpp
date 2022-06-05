@@ -6,3 +6,4 @@ enum class RuleActionType {
 };
 
 std::string getStringForRuleActionType(RuleActionType type);
+RuleActionType getRuleActionTypeFromString(std::string ruleActionName);

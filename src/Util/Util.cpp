@@ -23,6 +23,13 @@ std::string getStringForRuleType(RuleType type) {
     }
 }
 
+RuleType getRuleTypeFromString(std::string rule) {
+    if (rule == "collision")
+        return RuleType::Collision;
+
+    return RuleType::Collision;
+}
+
 std::string getStringForRuleActionType(RuleActionType type) {
     switch(type) {
         case RuleActionType::SpeedUp:
@@ -34,6 +41,15 @@ std::string getStringForRuleActionType(RuleActionType type) {
     }
 }
 
+RuleActionType getRuleActionTypeFromString(std::string ruleAction) {
+    if (ruleAction == "speed-up")
+        return RuleActionType::SpeedUp;
+    else if (ruleAction == "bounce")
+        return RuleActionType::Bounce;
+    
+    return RuleActionType::Bounce;
+}
+
 std::string getStringForEndConditionType(EndConditionType type) {
     switch(type) {
         case EndConditionType::Timeout:
@@ -43,4 +59,13 @@ std::string getStringForEndConditionType(EndConditionType type) {
         default:
             return "";
     }
+}
+
+EndConditionType getEndConditionTypeFromString(std::string endConditionType) {
+    if (endConditionType == "timeout")
+        return EndConditionType::Timeout;
+    else if (endConditionType == "maxScoreReached")
+        return EndConditionType::MaxScoreReached;
+
+    return EndConditionType::MaxScoreReached;
 }

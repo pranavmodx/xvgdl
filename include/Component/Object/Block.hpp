@@ -30,5 +30,5 @@ public:
 	void draw(std::unique_ptr<sf::RenderWindow> &window);
 	void moveController(bool useAlternate=false);
 
-	void AIController(sf::Vector2f ballPos);
+	void AIController(sf::Vector2f ballPos, int id=1);
 };

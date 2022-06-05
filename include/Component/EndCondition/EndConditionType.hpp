@@ -6,3 +6,4 @@ enum class EndConditionType {
 };
 
 std::string getStringForEndConditionType(EndConditionType type);
+EndConditionType getEndConditionTypeFromString(std::string endConditionType);
