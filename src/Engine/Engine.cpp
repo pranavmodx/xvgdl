@@ -33,6 +33,7 @@ void Engine::initVariables()
     videoMode.width = desktop.width;
     window = nullptr;
     scoreBoard = std::make_unique<ScoreBoard>("0 - 0", sf::Vector2f(desktop.width / 2 - 20, desktop.height / 2 - 50));
+    timer = std::make_unique<Timer>("0", sf::Vector2f(desktop.width / 2 - 150, 0.1 * desktop.height));
 }
 
 void Engine::initWindow()
@@ -79,6 +80,7 @@ void Engine::update()
     gameContext->processEvents();
     gameContext->processRules();
     gameContext->processEndConditions(clock);
+    timer->update(clock.getElapsedTime().asSeconds());
 }
 
 void Engine::render()
@@ -101,6 +103,7 @@ void Engine::render()
         dbg->draw(window.get());
 
     scoreBoard->draw(window.get());
+    timer->draw(window.get());
 
     window->display();
 }

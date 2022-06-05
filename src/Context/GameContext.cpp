@@ -32,12 +32,12 @@ int GameContext::parseGameDefinition(std::string filePath) {
 			if (!properties)
 				properties = std::make_unique<Properties>();
 			parseProperty(component);
-		// } else if (tagName == CONTROLS) {
-		// 	controls = std::make_unique<Controls>();
-		// 	parseControl(component);
-		// } else if (tagName == MAP) {
-		// 	map = std::make_unique<Map>();
-		// 	parseMap(component);
+		} else if (tagName == CONTROLS) {
+			controls = std::make_unique<Controls>();
+			parseControl(component);
+		} else if (tagName == MAP) {
+			map = std::make_unique<Map>();
+			parseMap(component);
 		} else if (tagName == PLAYERS) {
 			parsePlayers(component);
 		} else if (tagName == OBJECTS) {

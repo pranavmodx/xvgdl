@@ -1,7 +1,4 @@
 <gameDefinition>
-	<!-- <controls>
-		<control />
-	</controls> -->
 	<property key="timeout" value="20000" />
 	<players>
 		<player name="block1" type="block1" position="left" />
