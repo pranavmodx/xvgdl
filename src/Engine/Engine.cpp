@@ -69,8 +69,8 @@ void Engine::pollEvents()
     auto objs = gameContext->getObjectsByType(ObjectType::Object);
     auto ball = std::static_pointer_cast<Ball>(objs[0]);
 
-    p1->getIsAI() ? p1->AIController(ball->getPosition()) : p1->moveController();
-    p2->getIsAI() ? p2->AIController(ball->getPosition(), 2) : p2->moveController(true);
+    p1->getIsAI() ? p1->AIController(ball->getPosition()) : p1->moveController(true);
+    p2->getIsAI() ? p2->AIController(ball->getPosition(), 2) : p2->moveController();
 }
 
 void Engine::update()

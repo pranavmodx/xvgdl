@@ -1,0 +1,54 @@
+<gameDefinition>
+    <properties>
+        <property key="msPerFrame">60</property>
+    </properties>
+
+    <players>
+        <player name="player" lives="3" speedFactor="5"/>
+    </players>
+
+    <!-- Defining the Objects present in the game -->
+    <objects>
+        <object name="redEnemy" type="enemy" dynamic="true" volatile="true" sizeX="1" sizeY="1" />
+        <object name="blueEnemy" type="enemy" dynamic="true" volatile="true" sizeX="1" sizeY="1" />
+        <object name="yellowEnemy" type="enemy" dynamic="true" volatile="true" sizeX="1" sizeY="1" />
+    </objects>
+
+    <events>
+        <event type="SpawnItemEvent" objectName="enemy" timer="15000" />
+        <event type="PlayerShootEvent"  objectName="firePlayer" />
+    </events>
+
+    <rules>
+        <rule name="enemyProjectileHitsPlayer" type="collision">
+            <ruleActions>
+                <ruleAction objectName="fireEnemy"  result="disappear" />
+                <ruleAction objectName="player" result="livesDown" value="1" />
+            </ruleActions>
+        </rule>
+        <rule name="playerProjectileHitsRedEnemy" type="collision">
+            <ruleActions>
+                <ruleAction objectName="redEnemy"  result="" />
+                <ruleAction objectName="firePlayer" result="scoreUp" value="100" />
+            </ruleActions>
+        </rule>
+        <rule name="playerProjectileHitsBlueEnemy" type="collision">
+            <ruleActions>
+                <ruleAction objectName="blueEnemy"  result="" />
+                <ruleAction objectName="firePlayer" result="scoreUp" value="200" />
+            </ruleActions>
+        </rule>
+        <rule name="playerProjectileHitsYellowEnemy" type="collision">
+            <ruleActions>
+                <ruleAction objectName="yellowEnemy"  result="" />
+                <ruleAction objectName="firePlayer" result="scoreUp" value="300" />
+            </ruleActions>
+        </rule>
+    </rules>
+
+    <endConditions>
+        <endCondition type="TimeoutGameEndCondition" value="100000"/>
+        <endCondition type="NoObjectsPresentGameEndCondition" objectNames="redEnemy,blueEnemy,yellowEnemy" winningCondition="true" />
+        <endCondition type="LivesZeroGameEndCondition" />
+    </endConditions>
+</gameDefinition>

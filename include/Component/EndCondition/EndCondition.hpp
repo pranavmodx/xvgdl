@@ -12,9 +12,10 @@ using ObjectPtr = std::shared_ptr<Object>;
 class EndCondition {
 	std::string name;
 	EndConditionType type;
+	int value;
 
 public:
-	EndCondition(std::string name, EndConditionType type);
+	EndCondition(std::string name, EndConditionType type, int value=5);
 	void apply(GameContext* const gameContext, sf::Clock &clock, int score=0);
 	void handleTimeout(sf::Clock &clock);
 	void handleMaxScoreReached(int score);

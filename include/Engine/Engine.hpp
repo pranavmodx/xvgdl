@@ -11,7 +11,7 @@ using DebugPtr = std::shared_ptr<Debug>;
 
 class Engine {
 	std::unique_ptr<GameContext> gameContext;
-
+    
 	sf::VideoMode videoMode;
     std::unique_ptr<sf::RenderWindow> window;
     sf::Event event;

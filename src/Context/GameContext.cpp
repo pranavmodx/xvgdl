@@ -1,3 +1,5 @@
+#include <string>
+
 #include "Context/GameContext.hpp"
 #include "Component/Object/Block.hpp"
 #include "Component/Object/Ball.hpp"
@@ -201,14 +203,18 @@ void GameContext::parseRules(const pugi::xml_node &xmlRules) {
 void GameContext::parseEndConditions(const pugi::xml_node &xmlEndConditions) {
 	for (pugi::xml_node xmlEndCondition : xmlEndConditions.children())
 	{
-		std::string type;
+		std::string type, sval;
+		int value = 5;
 		for (auto att : xmlEndCondition.attributes()) {
 			std::string attrName = att.name();
 
 			if (attrName == "type") {
-				std::cout << att.name() << " " << att.value();
+				// std::cout << att.name() << " " << att.value();
 				type = att.value();
-			}
+			} else if (attrName == "value")
+				sval = att.value(); 
+				std::cout << sval;
+				// value = std::stoi(std::string(sval)); // throws std::invalid_argument: stoi: no conversion - must be due to xml format
 		}
 
 		EndConditionType endType = getEndConditionTypeFromString(type);
