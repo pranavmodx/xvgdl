@@ -1,13 +1,17 @@
 #include <SFML/Graphics.hpp>
 #include <sstream>
+#include <iostream>
 
 #include "Engine/Engine.hpp"
 
 int Engine::loadGameContext(std::string filePath)
 {
     gameContext = std::make_unique<GameContext>();
-    if (gameContext->parseGameDefinition(filePath))
+    if (gameContext->parseGameDefinition(filePath)) {
+        std::cout << "XML file parsed successfully\n";
         return 1;
+    } else
+        std::cout << "Parser Error :\nInvalid component specification found\n";
     return 0;
 }
 

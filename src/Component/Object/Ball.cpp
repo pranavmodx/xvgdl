@@ -2,7 +2,7 @@
 
 std::vector<int> Ball::initDirY = {-1, 1};
 
-Ball::Ball(std::string name) : Object(name), ball(30.f), dirX(-1), dirY(Ball::initDirY[(int)rand() % 2]), speed(10) {
+Ball::Ball(std::string name) : Object(name), ball(15.f), dirX(-1), dirY(Ball::initDirY[(int)rand() % 2]), speed(5) {
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     ball.setPosition(sf::Vector2f(desktop.width / 2 - ball.getRadius(), desktop.height / 2 - ball.getRadius()));
 }

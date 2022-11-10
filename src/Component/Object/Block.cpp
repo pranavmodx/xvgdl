@@ -1,11 +1,11 @@
 #include "Component/Object/Block.hpp"
 
-Block::Block(const std::string &name, const std::string &position) : Player(name), block(sf::Vector2f(20, 300)), speed(10.0f) {
+Block::Block(const std::string &name, const std::string &position) : Player(name), block(sf::Vector2f(10, 100)), speed(5.0f) {
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 	if (position == "left")
 		block.setPosition(sf::Vector2f(100, desktop.height / 2 - 50));
 	else if (position == "right")
-		block.setPosition(sf::Vector2f(desktop.width - 200, desktop.height / 2 - 50));
+		block.setPosition(sf::Vector2f(desktop.width - 100, desktop.height / 2 - 50));
 }
 
 void Block::draw(std::unique_ptr<sf::RenderWindow> &window) {
@@ -14,6 +14,9 @@ void Block::draw(std::unique_ptr<sf::RenderWindow> &window) {
 }
 
 void Block::move(float dirX, float dirY) {
+	// if (block.getPosition().y <= 0) {
+	// 	block.move(speed * dirX, speed * -dirY);
+	// }
 	block.move(speed * dirX, speed * dirY);
 }
 
@@ -102,11 +105,11 @@ bool Block::getIsAI() {
 
 void Block::AIController(sf::Vector2f ballPos, int id) {
 	if (id == 1)
-		speed = 7;
+		speed = 2.5;
 	else
-		speed = 15;
+		speed = 6;
 
-	if (block.getPosition().y + block.getSize().y > ballPos.y)
+	if (block.getPosition().y >=0 and block.getPosition().y + block.getSize().y > ballPos.y)
 		move(0.f, -1.f);
 	else if (block.getPosition().y + block.getSize().y < ballPos.y)
 		move(0.f, 1.f);

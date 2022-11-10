@@ -13,7 +13,7 @@ int GameContext::parseGameDefinition(std::string filePath) {
     XMLPlatformUtils::Initialize();
     if (!validator.validateSchema(schemaPath, filePath)) {
 		XMLPlatformUtils::Terminate();
-		std::cout << "Couldn't validate schema\n";
+		std::cout << "Validator Error :\nCouldn't validate schema\n";
 		return 0;
 	}
     XMLPlatformUtils::Terminate();
@@ -48,7 +48,8 @@ int GameContext::parseGameDefinition(std::string filePath) {
 			parseRules(component);
 		} else if (tagName == END_CONDITIONS) {
 			parseEndConditions(component);
-		}
+		} else 
+			return 0;
 	}
 
 	return 1;
@@ -206,7 +207,7 @@ void GameContext::parseEndConditions(const pugi::xml_node &xmlEndConditions) {
 			std::string attrName = att.name();
 
 			if (attrName == "type") {
-				std::cout << att.name() << " " << att.value();
+				// std::cout << att.name() << " " << att.value();
 				type = att.value();
 			}
 		}

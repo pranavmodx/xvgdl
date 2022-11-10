@@ -10,7 +10,7 @@ class Timer : public Debug {
 public:
     Timer() {}
     Timer(const std::string &textStr, const sf::Vector2f &pos) : Debug(textStr, pos), time(0) {
-        text.setCharacterSize(100);
+        text.setCharacterSize(50);
     }
 
     inline void update(float t) { 

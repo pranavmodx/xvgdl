@@ -34,7 +34,7 @@ class GameContext {
 	ControlsPtr controls;
 	MapPtr map;
 	std::unordered_map<ObjectType, std::vector<ObjectPtr>> objects;
-	std::unordered_map<RuleType, std::vector<RulePtr>> rules; // ptr isn't needed; remove later
+	std::unordered_map<RuleType, std::vector<RulePtr>> rules; // ptr isn't needed; remove laterv
 	std::vector<EndCondition> endConditions;
 	std::vector<Event> events;
 

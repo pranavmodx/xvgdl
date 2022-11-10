@@ -23,11 +23,11 @@ void EndCondition::apply(GameContext* const gameContext, sf::Clock &clock, int s
 
 void EndCondition::handleTimeout(sf::Clock &clock) {
     sf::Time elapsed1 = clock.getElapsedTime();
-    // std::cout << elapsed1.asSeconds() << std::endl;
-    // if (elapsed1.asSeconds() > 5) {
-    //     std::cout << "Game timed out!\n";
-    //     exit(0);
-    // }
+    std::cout << elapsed1.asSeconds() << std::endl;
+    if (elapsed1.asSeconds() > 10) {
+        std::cout << "Game timed out!\n";
+        exit(0);
+    }
     // std::stringstream ss;
     // ss << elapsed1.asSeconds();
 }

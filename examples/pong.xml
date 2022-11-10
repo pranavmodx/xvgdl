@@ -17,7 +17,7 @@
 		</rule>
 	</rules>
 	<endConditions>
-		<endCondition type="timeout" property="timeout" value="3" />
-		<endCondition type="maxScoreReached" />
+		<!-- <endCondition type="timeout" value="10" /> -->
+		<endCondition type="maxScoreReached" value="3" />
 	</endConditions>
 </gameDefinition>

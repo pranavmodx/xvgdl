@@ -10,7 +10,7 @@ class ScoreBoard : public Debug {
 public:
     ScoreBoard() {}
     ScoreBoard(const std::string &textStr, const sf::Vector2f &pos) : Debug(textStr, pos), left(0), right(0) {
-        text.setCharacterSize(100);
+        text.setCharacterSize(50);
     }
 
     inline void update(int l, int r) { 
